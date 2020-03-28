@@ -7,24 +7,21 @@ declare global {
     draw: () => void;
   }
 }
+
 import Boid from "./Boid.js";
 
-const maxBoidCount = 20;
-
-let ralphs: Boid[];
-function generateBoids(): void {
-  ralphs = [];
-  for (let i = 0; i < maxBoidCount; i++) {
-    let x = random(windowWidth);
-    let y = random(windowHeight);
-    let boid = new Boid(x, y);
-    ralphs.push(boid);
-  }
-}
+const boidCount: number = 20;
+let boidArray: Boid[];
 
 window.setup = () => {
   createCanvas(windowWidth, windowHeight);
-  generateBoids();
+  boidArray = [];
+  for (let i = 0; i < boidCount; i++) {
+    let x = random(windowWidth);
+    let y = random(windowHeight);
+    let boid = new Boid (x, y);
+    boidArray.push(boid);
+  }
 };
 window.windowResized = () => {
   resizeCanvas(windowWidth, windowHeight);
@@ -32,22 +29,19 @@ window.windowResized = () => {
 
 window.keyPressed = () => {
   if (key.toLowerCase() === "v") {
-    generateBoids();
   }
 }
 
 window.draw = () => {
-    // update logic
-    for (let i = 0; i < ralphs.length; i++) {
-      ralphs[i].update();
-      ralphs[i].constrain();
-    }
-
-    // draw things
-    background(20, 44, 100);
-    for (let i = 0; i < ralphs.length; i++) {
-      ralphs[i].draw();
-    }
+  for (let i = 0; i < boidArray.length; i++) {
+    boidArray[i].update();
+    boidArray[i].constrain();
+  }
+  background(0, 0, 0);
+  strokeWeight(0);
+  for (let i = 0; i < boidArray.length; i++) {
+    boidArray[i].draw();
+  }
 }
 
 export default null;
